@@ -1,0 +1,44 @@
+{
+  "name": "xmpp-client",
+  "version": "0.0.2",
+  "main": "./lib/xmpp-client",
+  "description": "High level xmpp client for node.js",
+  "author": {
+    "name": "Mathieu Lecarme",
+    "email": "mathieu@garambrogne.net"
+  },
+  "dependencies": {
+    "node-xmpp": ">= 0.0.4",
+    "colors": ">= 0.3.0"
+  },
+  "keywords": [
+    "xmpp"
+  ],
+  "repositories": [
+    {
+      "type": "git",
+      "path": "git://github.com/athoune/node-xmpp-client.git"
+    }
+  ],
+  "homepage": "http://github.com/athoune/node-xmpp-client",
+  "bugs": {
+    "url": "http://github.com/athoune/node-xmpp-client/issues"
+  },
+  "licenses": [
+    {
+      "type": "GPLv3"
+    }
+  ],
+  "engine": "node",
+  "gitHead": "1a920b0dc6c343d506cf22e4cf58630f75a97d1a",
+  "readme": "XMPP Client for node\n====================\n\nNode-xmpp is a cute but low level tool, so, here is xmpp client.\n\nIQ are handled with callback, presence and roster is manageable, every xmpp events become a node event. This client tries to be as polite as Psi.\n\nInstall\n-------\n\nYou need the low level node xmpp tools, and colors.\n\n    npm install .\n\nTest\n----\n\nAsync testing is a sport, you need colors for that :\n\n    npm install nodeunit\n\nYou have to edit a new file in `test/conf.js` :\n\n    exports.conf = {\n      a: {\n        jid: 'andre@gmail.com',\n        password: '42',\n        color: 'red',\n        host: 'talk.google.com'\n      },\n      b: {\n        jid: 'bob@jabber.org',\n        password: 'beuha'\n      }\n    }\n\nThen, you can launch test :\n\n    node test/test.js\n\nAPI\n---\n\nClient handle all the xmpp stack with object, callback, event and handlers. All in async.\n\n### Client ###\n\nThe first object is the client :\n\n    var c = new Client({\n      jid: 'bob@jabber.org',\n      password: 'beuha'\n    }, function() {\n        sys.debug(\"I'm connected\");\n    });\nYou instiante it with xmpp params and callback, tirggered when connection is done, and roster fetched. All your work should be inside the callback, outside, you don't know your state.\n\nThe client throw events :\n\n * _presence_\n * _presence:error_\n * _message_\n\nAnd some attributes are available :\n\n * _presences_\n * _roster_\n\n### IQ ###\nIq is handled quietly. You can ask someone with a callback, for the response.\n\n    var jabber = this;\n    this.iq(new xmpp.Element('query', {xmlns: 'jabber:iq:roster'}), function(iq) {\n    \tiq.getChild('query', 'jabber:iq:roster').children.forEach(function(child) {\n    \t\t//iterating over evrybody\n    \t\tsys.debug(child.attrs.jid);\n    \t});\n    });\n\nAnswering a distant iq is handled with an handler. Default object handles :\n\n * _http://jabber.org/protocol/disco#info_ :discovery\n * _jabber:iq:last_ : last action\n * _jabber:iq:version_ : client version\n\nHere is an example :\n\n    var jabber = this;\n    this.registerIqHandler('jabber:iq:last', function(stanza) {\n    \tjabber.resultIq(stanza, new xmpp.Element('query', {\n    \t\txmlns: 'jabber:iq:last', seconds:'1'})\n    \t\t.tree()\n    \t);\n    });\n\n\nNot handled iq throws an event : _iq:unknow_\n\n### Room ###\n\nJust like Client, room is created with a callback, triggered when presence is return from the server.\n\n    this.room('beuha', function(status) {\n\n    });\n\nEvents :\n\n * _presence_\n * _message_\n\nAvailable attributes :\n\n * _affiliation_\n * _role_\n\n\n### PubSub ###\n\nPubsub support is experimental for now.",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "path": "git://github.com/athoune/node-xmpp-client.git"
+  },
+  "_id": "xmpp-client@0.0.2",
+  "_shasum": "37ea6a37568b4f88ce2fda2f3a47c57fc790d638",
+  "_from": "../../../../../../tmp/npm-22223-d9e08df5/git-cache-ea5fb26ba285/1a920b0dc6c343d506cf22e4cf58630f75a97d1a",
+  "_resolved": "git://github.com/tananrules/node-xmpp-client.git#1a920b0dc6c343d506cf22e4cf58630f75a97d1a"
+}
